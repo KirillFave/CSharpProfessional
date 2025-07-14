@@ -11,8 +11,14 @@ public class DatabaseContext : DbContext
     public DbSet<Statement> Statements { get; set; }
     public DbSet<Vacation> Vacations { get; set; }
 
+    public DatabaseContext() 
+    {
+        Database.EnsureCreated();
+    }
+
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
+        Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,7 +32,8 @@ public class DatabaseContext : DbContext
 
         modelBuilder.Entity<User>()
             .HasOne(u => u.Statement)
-            .WithOne(s => s.User);
+            .WithOne(s => s.User)
+            .HasForeignKey<Statement>();
 
         modelBuilder.Entity<Statement>()
             .HasMany(s => s.Vacations)
@@ -43,6 +50,14 @@ public class DatabaseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        optionsBuilder.UseNpgsql(
+            "Host=localhost;" +
+            "Port=5432;" +
+            "Database=VacationPlanning;" +
+            "Username=postgres;" +
+            "Password=superpass"
+        );
+
         optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
     }
 }
