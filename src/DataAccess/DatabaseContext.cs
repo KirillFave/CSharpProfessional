@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace DataAccess;
 
@@ -18,6 +19,7 @@ public class DatabaseContext : DbContext
 
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
+        Database.EnsureDeleted();
         Database.EnsureCreated();
     }
 
@@ -45,6 +47,8 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Statement>().HasKey(i => i.Id);
         modelBuilder.Entity<Vacation>().HasKey(i => i.Id);
 
+        Seed(modelBuilder);
+
         base.OnModelCreating(modelBuilder);
     }
 
@@ -59,5 +63,28 @@ public class DatabaseContext : DbContext
         );
 
         optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
+    }
+
+    private static void Seed(ModelBuilder modelBuilder)
+    {
+        User user = new()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Петров Пётр Петрович",
+            Email = "PetrovPP@VacationPlanning.world"
+        };
+
+        modelBuilder.Entity<User>().HasData(
+            user 
+        );
+
+        modelBuilder.Entity<Subdivision>().HasData(
+            new Subdivision()
+            {
+                Id = Guid.NewGuid(),
+                ManagerId = user.Id,
+                EmployeeIds = [user.Id]
+            }
+        );
     }
 }
