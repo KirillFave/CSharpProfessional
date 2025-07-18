@@ -45,20 +45,22 @@ public partial class MainWindow : Window
 
             TextBlock dateTextBlock = new()
             {
-                Text = date.ToString("dd")
+                Text = date.ToString("dd"),
+                Width = 30
             };
-            Grid.SetRow(dateTextBlock, 1);
+            Grid.SetRow(dateTextBlock, 2);
             Grid.SetColumn(dateTextBlock, column);
             MainGrid.Children.Add(dateTextBlock);
         }
 
         column = 1;
 
-        for (DateTime date = initialDate; date <= lastDate; date.AddMonths(1))
+        for (DateTime date = initialDate; date <= lastDate; date = date.AddMonths(1))
         {
             TextBlock monthTextBlock = new()
             {
-                Text = date.ToString("MMMM", CultureInfo.GetCultureInfo("ru"))                
+                Text = date.ToString("MMMM", CultureInfo.GetCultureInfo("ru")),
+                VerticalAlignment = VerticalAlignment.Center,
             };
 
             int daysInMonth = DateTime.DaysInMonth(date.Year, date.Month);
@@ -78,7 +80,7 @@ public partial class MainWindow : Window
     /// </summary>
     public void RemoveUserRows()
     {
-        for (int i = MainGrid.RowDefinitions.Count - 1; i > 0; i--)
+        for (int i = MainGrid.RowDefinitions.Count - 1; i > 1; i--)
         {
             MainGrid.RowDefinitions.RemoveAt(i);
 
@@ -103,14 +105,20 @@ public partial class MainWindow : Window
         for (int i = 0; i < Users.Count; i++)
         {
             User user = Users[i];
-            int row = i + 1; // +1 потому что 0 строка - заголовки
+            int row = i + 2; // +2 потому что 0, 1 строки - заголовки
 
-            MainGrid.RowDefinitions.Add(new RowDefinition());
+            MainGrid.RowDefinitions.Add(
+                new RowDefinition()
+                {
+                    Height = new GridLength(30)
+                }
+            );
 
             TextBlock userNameTextBlock = new()
             {
                 Text = user.Name,
-                Margin = new Thickness(5)
+                Margin = new Thickness(5),
+                VerticalAlignment = VerticalAlignment.Center,
             };
             Grid.SetRow(userNameTextBlock, row);
             Grid.SetColumn(userNameTextBlock, 0);
