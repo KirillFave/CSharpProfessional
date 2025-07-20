@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp", "WpfApp\WpfApp.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{C69946CF-AE94-495B-BECF-318E05E3B155}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationHelper", "Application\ApplicationHelper.csproj", "{0D33F01E-6AAA-4EFE-A368-2943BA9722D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{C69946CF-AE94-495B-BECF-318E05E3B155}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C69946CF-AE94-495B-BECF-318E05E3B155}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C69946CF-AE94-495B-BECF-318E05E3B155}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D33F01E-6AAA-4EFE-A368-2943BA9722D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D33F01E-6AAA-4EFE-A368-2943BA9722D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D33F01E-6AAA-4EFE-A368-2943BA9722D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D33F01E-6AAA-4EFE-A368-2943BA9722D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,5 +43,6 @@ Global
 		{4A4F3BFA-F2DA-417B-8E6A-03E94292F4C5} = {A5525A31-B23B-4A8F-BCD8-67722C45E44D}
 		{23A33D67-D0D3-4687-8DF7-A39C823A626D} = {A5525A31-B23B-4A8F-BCD8-67722C45E44D}
 		{C69946CF-AE94-495B-BECF-318E05E3B155} = {A5525A31-B23B-4A8F-BCD8-67722C45E44D}
+		{0D33F01E-6AAA-4EFE-A368-2943BA9722D6} = {A5525A31-B23B-4A8F-BCD8-67722C45E44D}
 	EndGlobalSection
 EndGlobal

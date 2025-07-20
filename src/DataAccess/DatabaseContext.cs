@@ -37,9 +37,9 @@ public class DatabaseContext : DbContext
             .WithOne(s => s.User)
             .HasForeignKey<Statement>();
 
-        modelBuilder.Entity<Statement>()
-            .HasMany(s => s.Vacations)
-            .WithOne(v => v.Statement);
+        modelBuilder.Entity<Vacation>()
+            .HasOne(v => v.Statement)
+            .WithMany(s => s.Vacations);
 
         // Keys
         modelBuilder.Entity<Subdivision>().HasKey(i => i.Id);
@@ -67,23 +67,83 @@ public class DatabaseContext : DbContext
 
     private static void Seed(ModelBuilder modelBuilder)
     {
-        User user = new()
+        User userWithUnconfirmedStatement = new()
         {
             Id = Guid.NewGuid(),
             Name = "Петров Пётр Петрович",
             Email = "PetrovPP@VacationPlanning.world"
         };
 
+        User userWithConfirmedStatement = new()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Сидоров Сидор Сидорович",
+            Email = "SidorovSS@VacationPlanning.world"
+        };
+
         modelBuilder.Entity<User>().HasData(
-            user 
+            userWithUnconfirmedStatement,
+            userWithConfirmedStatement
         );
 
         modelBuilder.Entity<Subdivision>().HasData(
             new Subdivision()
             {
                 Id = Guid.NewGuid(),
-                ManagerId = user.Id,
-                EmployeeIds = [user.Id]
+                ManagerId = userWithUnconfirmedStatement.Id,
+                EmployeeIds = [
+                    userWithUnconfirmedStatement.Id,
+                    userWithConfirmedStatement.Id
+                ]
+            }
+        );
+
+        Statement unconfirmedStatement = new()
+        {
+            Id = Guid.NewGuid(),
+            UserId = userWithUnconfirmedStatement.Id
+        };
+
+        Statement confirmedStatement = new()
+        {
+            Id = Guid.NewGuid(),
+            UserId = userWithConfirmedStatement.Id,
+            IsConfirmed = true
+        };
+
+        modelBuilder.Entity<Statement>().HasData(
+            unconfirmedStatement,
+            confirmedStatement
+        );
+
+        modelBuilder.Entity<Vacation>().HasData(
+            new Vacation()
+            {
+                Id = Guid.NewGuid(),
+                StartDate = new DateTime(2026, 1, 10, 0, 0, 0, DateTimeKind.Utc),
+                EndDate = new DateTime(2026, 1, 13, 0, 0, 0, DateTimeKind.Utc),
+                StatementId = confirmedStatement.Id,
+            },
+            new Vacation()
+            {
+                Id = Guid.NewGuid(),
+                StartDate = new DateTime(2026, 1, 20, 0, 0, 0, DateTimeKind.Utc),
+                EndDate = new DateTime(2026, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                StatementId = confirmedStatement.Id,
+            },
+            new Vacation()
+            {
+                Id = Guid.NewGuid(),
+                StartDate = new DateTime(2026, 1, 15, 0, 0, 0, DateTimeKind.Utc),
+                EndDate = new DateTime(2026, 1, 18, 0, 0, 0, DateTimeKind.Utc),
+                StatementId = unconfirmedStatement.Id,
+            },
+            new Vacation()
+            {
+                Id = Guid.NewGuid(),
+                StartDate = new DateTime(2026, 1, 25, 0, 0, 0, DateTimeKind.Utc),
+                EndDate = new DateTime(2026, 1, 28, 0, 0, 0, DateTimeKind.Utc),
+                StatementId = unconfirmedStatement.Id,
             }
         );
     }
